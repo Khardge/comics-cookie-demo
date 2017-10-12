@@ -39,7 +39,7 @@ class Publisher(db.Model):
         return '<Publisher {}>'.format(self.name)
 
 @app.route("/")
-def new_post():
+def index():
     comics = Comic.query.all()
     return render_template('index.html', comics=comics)
 

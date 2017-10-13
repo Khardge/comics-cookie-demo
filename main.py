@@ -1,7 +1,8 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 import cgi
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
@@ -40,8 +41,33 @@ class Publisher(db.Model):
 
 @app.route("/")
 def index():
+    #check what the last visited comic was
+    last_viewed_comic_id = request.cookies.get('last-viewed-comic-id')
+    if last_viewed_comic_id:
+        comic = Comic.query.get(last_viewed_comic_id)
+        print('last viewed comic id', last_viewed_comic_id)
+
+    # Check for referrer query param
+    referrer = request.args.get('referrer')
+    if referrer:
+        print('referred by', referrer)
+
+    # set a last visited cookie
     comics = Comic.query.all()
-    return render_template('index.html', comics=comics)
+    response = make_response(render_template('index.html', comics=comics, last_viewed_comic=comic))
+    response.set_cookie('last-visited-index', datetime.now().strftime('%m/%d/%Y'), max_age=60*60*24*365)
+
+    return response
+
+@app.route('/comic/<comic_id>')
+def comic(comic_id):
+    #get comic from db
+    comic = Comic.query.get(comic_id)
+
+    #set last viewed comic id in a cookie
+    response = make_response(render_template('comic.html', comic=comic))
+    response.set_cookie('last-viewed-comic-id', str(comic.id), max_age=60*60*24*365)
+    return response
 
 if __name__ == "__main__":
     app.run()

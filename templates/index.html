@@ -9,18 +9,24 @@
         <th>Title</th>
         <th>Issue</th>
         <th>Year</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for comic in comics: %}
-        <tr>
+        <tr {% if comic == last_viewed_comic %} style="color:red;" {% endif %} >
           <td>{{comic.title}}</td>
           <td>{{comic.issue_number}}</td>
           <td>{{comic.year}}</td>
+          <td><a href="/comic/{{comic.id}}">view</a></td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+{% endif %}
+
+{% if last_viewed_comic %}
+  Last viewed: {{last_viewed_comic.title}} - {{last_viewed_comic.issue_number}}
 {% endif %}
 
 {% if error %}

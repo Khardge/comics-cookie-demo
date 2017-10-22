@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 12, 2017 at 09:40 PM
+-- Generation Time: Oct 23, 2017 at 12:25 AM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -68,6 +68,25 @@ INSERT INTO `publisher` (`id`, `name`) VALUES
 (1, 'Marvel'),
 (2, 'DC');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  `password` varchar(120) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`) VALUES
+(1, 'welzie@gmail.com', '1234');
+
 --
 -- Indexes for dumped tables
 --
@@ -86,6 +105,12 @@ ALTER TABLE `publisher`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -99,6 +124,11 @@ ALTER TABLE `comic`
 --
 ALTER TABLE `publisher`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --

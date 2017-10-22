@@ -2,13 +2,14 @@
 {% block content %}
 
 {% if comics %}
-  <h2>My Comics</h2>
+  <h2>My Comics {% if publisher %} - {{publisher.name}} {% endif %}</h2>
   <table>
     <thead>
       <tr>
         <th>Title</th>
         <th>Issue</th>
         <th>Year</th>
+        <th>Publisher</th>
         <th></th>
       </tr>
     </thead>
@@ -18,6 +19,7 @@
           <td>{{comic.title}}</td>
           <td>{{comic.issue_number}}</td>
           <td>{{comic.year}}</td>
+          <td><a href="/?publisher_id={{comic.publisher.id}}">{{comic.publisher.name}}</a></td>
           <td><a href="/comic/{{comic.id}}">view</a></td>
         </tr>
       {% endfor %}

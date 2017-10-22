@@ -9,12 +9,31 @@
         </style>
     </head>
     <body>
+        <div style='float: right'>
+            {% if 'email' in session %}
+                {{ session['email'] }}
+                <form action="/logout" method="post" id='logout'>
+                    <input type="submit" value="Log Out" />
+                </form>
+            {% else %}
+                <a href="login">login</a> | <a href="register">register</a>
+            {% endif %}
+        </div>
         <h1>
             <a href="/">Home</a>
         </h1>
 
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}
         {% endblock %}
-
     </body>
 </html>

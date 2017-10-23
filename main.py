@@ -59,7 +59,7 @@ def register():
         user = User(email=email, password=password)
         db.session.add(user)
         db.session.commit()
-        session['user'] = user.email
+        log_user_in(user)
         return redirect("/")
     else:
         return render_template('register.html')
@@ -109,7 +109,7 @@ def comic(comic_id):
 # Util functions
 #-------------------------
 def logged_in_user():
-    owner = User.query.filter_by(email=session['user']).first()
+    owner = User.query.filter_by(email=session['email']).first()
     return owner
 
 def is_email(string):

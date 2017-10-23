@@ -3,6 +3,7 @@ from app import app
 from models import Comic, Publisher, User, db
 import cgi
 from datetime import datetime
+import hashlib
 
 #-------------------------
 # Route handlers
@@ -25,7 +26,8 @@ def login():
         #email and password were correct
         #put user.email into session to keep user logged in
         user = users.first()
-        if password == user.password:
+        hashed_password = get_hashed_password(password)
+        if hashed_password == user.password:
             log_user_in(user)
             flash('welcome back, '+user.email)
             return redirect("/")
@@ -56,7 +58,8 @@ def register():
         if password != verify:
             flash('passwords did not match')
             return redirect('/register')
-        user = User(email=email, password=password)
+        hashed_password = get_hashed_password(password)
+        user = User(email=email, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         log_user_in(user)
@@ -108,6 +111,10 @@ def comic(comic_id):
 #-------------------------
 # Util functions
 #-------------------------
+def get_hashed_password(password):
+    """hash the password and return it"""
+    return hashlib.sha256(str.encode(password)).hexdigest()
+
 def logged_in_user():
     owner = User.query.filter_by(email=session['email']).first()
     return owner
